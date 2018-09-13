@@ -1,10 +1,15 @@
 /*********************************
- * Sketch version: 1.0           *
+ * Sketch version: 1.1           *
  *********************************
  * This sketch just experiment!! * 
  * RC for overhead crane         *
  * by Anomalchik                 *
  *********************************/
+ 
+/*
+ * Changelog
+ * 1.1 Added blocking for paired buttons
+ */
 
 // NOTE: Need RemoteXY library v 2.3.4
 // NOTE2: in RemoteXY_API.h reduced REMOTEXY_TIMEOUT to 1000.
@@ -105,14 +110,26 @@ void loop() {
   if (RemoteXY.connect_flag > 0) {
     digitalWrite(relays[6], !RELAY_DEFAULT_STATE); // Enable control circuit if RemoteXY connected
     // crane
-    digitalWrite(relays[0], (RemoteXY.CFORWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
-    digitalWrite(relays[1], (RemoteXY.CBACKWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    if (RemoteXY.CBACKWARD == 0) {
+      digitalWrite(relays[0], (RemoteXY.CFORWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
+    if (RemoteXY.CFORWARD == 0) {
+      digitalWrite(relays[1], (RemoteXY.CBACKWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
     // telpher
-    digitalWrite(relays[2], (RemoteXY.TFORWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
-    digitalWrite(relays[3], (RemoteXY.TBACKWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    if (RemoteXY.TBACKWARD == 0) {
+      digitalWrite(relays[2], (RemoteXY.TFORWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
+    if (RemoteXY.TFORWARD == 0) {
+      digitalWrite(relays[3], (RemoteXY.TBACKWARD==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
     // lift
-    digitalWrite(relays[4], (RemoteXY.VIRA==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
-    digitalWrite(relays[5], (RemoteXY.MAINA==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    if (RemoteXY.MAINA == 0) {
+      digitalWrite(relays[4], (RemoteXY.VIRA==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
+    if (RemoteXY.VIRA == 0) {
+      digitalWrite(relays[5], (RemoteXY.MAINA==0)?RELAY_DEFAULT_STATE:!RELAY_DEFAULT_STATE);
+    }
   }else{
     disableAllButtons(); //disable all buttons if connection is lost
     disableAllRelays(); //disable all relays if connection is lost
