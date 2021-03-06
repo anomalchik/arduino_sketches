@@ -2,7 +2,7 @@
 #include <GyverButton.h>
 
 #define BUTTON 7
-#define CHANNEL1 3
+#define CHANNEL1 6
 #define CHANNEL2 5
 
 /* EEPROM BLOCKS START */
