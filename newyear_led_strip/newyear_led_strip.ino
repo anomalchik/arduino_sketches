@@ -15,7 +15,7 @@ int delayStep=25;
 int pModeBlinkCycles=16;
 
 /* Pin voltage */
-int pinHigh=42; // 0.824V
+int pinHigh=40; // 0.78V
 int pinLow=0;
 int channelState[2];
 int blinkCycle;
